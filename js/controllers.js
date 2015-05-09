@@ -353,6 +353,11 @@ appControllers.controller('ProfController', ['$scope', '$q', '$http', '$routePar
   function loadComments() {
     console.log('comments');
     console.log($scope.reviews);
+
+    $scope.reviews.forEach(function(obj, i) {
+
+    })
+
     for (var i in $scope.reviews) {
       console.log(i);
       var reviewId = $scope.reviews[i]._id;
@@ -375,6 +380,31 @@ appControllers.controller('ProfController', ['$scope', '$q', '$http', '$routePar
 
         });
     }
+  }
+  function load() {
+    var params = {where: {user: userId}};
+    ReviewService.get(params)
+      .success(function (data) {
+        $scope.reviews = data.data;
+
+        var courses = [];
+
+        $scope.reviews.forEach(function (obj, i) {
+          courses.push(getCourse(obj.course, function (value) {
+            $scope.reviews[i].courseName = value.name;
+          }));
+        });
+
+        $q.all(courses);
+      });
+  }
+
+  function getCourse(courseId, callback) {
+    return CourseService.getById(courseId).success(
+      function (value) {
+        return callback(value.data);
+      }
+    );
   }
 
 }]);
@@ -552,7 +582,7 @@ appControllers.controller('UserReviewController', ['$scope', '$q', '$http', '$ro
       function (value) {
         return callback(value.data);
       }
-    )
+    );
   }
 
   $scope.delete = function(reviewId) {
