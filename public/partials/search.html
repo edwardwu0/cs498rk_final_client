@@ -1,0 +1,24 @@
+<div class="row">
+    <div class="small-6 columns">
+        <ul>
+            <li ng-repeat="course in courses" class="row">
+                <a href="#/course/{{course._id}}">
+                    <h3>{{course.name}}</h3>
+
+                    <p>{{course.description}}</p>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="small-6 columns">
+        <ul>
+            <li ng-repeat="prof in profs" class="row">
+                <a href="#/professor/{{prof._id}}">
+                    <h3>{{prof.name}}</h3>
+
+                    <p>{{prof.description}}</p>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>

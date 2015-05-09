@@ -1,26 +1,43 @@
 // var demoApp = angular.module('demoApp', ['demoControllers']);
 
-var demoApp = angular.module('demoApp', ['ngRoute', 'demoControllers', 'demoServices']);
+var classApp = angular.module('classApp', ['ngRoute', 'appControllers', 'appServices']);
 
-demoApp.config(['$routeProvider', function($routeProvider) {
+classApp.config(['$routeProvider', function ($routeProvider) {
   $routeProvider.
-    when('/firstview', {
-    templateUrl: 'partials/firstview.html',
-    controller: 'FirstController'
-  }).
-  when('/secondview', {
-    templateUrl: 'partials/secondview.html',
-    controller: 'SecondController'
-  }).
-  when('/settings', {
-    templateUrl: 'partials/settings.html',
-    controller: 'SettingsController'
-  }).
-  when('/llamalist', {
-    templateUrl: 'partials/llamalist.html',
-    controller: 'LlamaListController'
-  }).
-  otherwise({
-    redirectTo: '/settings'
-  });
+    when('/search', {
+      templateUrl: 'partials/search.html',
+      controller: 'SearchController'
+    }).
+    when('/course/:id', {
+      templateUrl: 'partials/courseDetail.html',
+      controller: 'CourseController'
+    }).
+    when('/course/:id/review', {
+      templateUrl: 'partials/courseReviewAdd.html',
+      controller: 'CourseReviewController'
+    }).
+    when('/course/:id/review/:reviewId', {
+      templateUrl: 'partials/courseReviewAdd.html',
+      controller: 'CourseReviewController'
+    }).
+    when('/professor/:id', {
+      templateUrl: 'partials/profDetail.html',
+      controller: 'ProfController'
+    }).
+    when('/professor/:id/review', {
+      templateUrl: 'partials/profReviewAdd.html',
+      controller: 'ProfReviewController'
+    }).
+    when('/professor/:id/review/:reviewId', {
+      templateUrl: 'partials/profReviewAdd.html',
+      controller: 'ProfReviewController'
+    }).
+    when('/reviews/:userId', {
+      templateUrl: 'partials/userReviews.html',
+      controller: 'UserReviewController'
+    }).
+    otherwise({
+      redirectTo: '/search'
+    });
+
 }]);
