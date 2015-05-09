@@ -12,25 +12,25 @@ classApp.config(['$routeProvider', function ($routeProvider) {
       templateUrl: 'partials/courseDetail.html',
       controller: 'CourseController'
     }).
-    when('/course/:id/review', {
-      templateUrl: 'partials/courseReviewAdd.html',
-      controller: 'CourseReviewController'
+    when('/review/course/:courseId', {
+      templateUrl: 'partials/ReviewAdd.html',
+      controller: 'ReviewController'
     }).
-    when('/course/:id/review/:reviewId', {
-      templateUrl: 'partials/courseReviewAdd.html',
-      controller: 'CourseReviewController'
+    when('/review/edit/:reviewId', {
+      templateUrl: 'partials/ReviewAdd.html',
+      controller: 'ReviewController'
     }).
     when('/professor/:id', {
       templateUrl: 'partials/profDetail.html',
       controller: 'ProfController'
     }).
-    when('/professor/:id/review', {
-      templateUrl: 'partials/profReviewAdd.html',
-      controller: 'ProfReviewController'
+    when('/review/professor/:profId', {
+      templateUrl: 'partials/ReviewAdd.html',
+      controller: 'ReviewController'
     }).
-    when('/professor/:id/review/:reviewId', {
-      templateUrl: 'partials/profReviewAdd.html',
-      controller: 'ProfReviewController'
+    when('/review/edit/:reviewId', {
+      templateUrl: 'partials/ReviewAdd.html',
+      controller: 'ReviewController'
     }).
     when('/reviews/:userId', {
       templateUrl: 'partials/userReviews.html',

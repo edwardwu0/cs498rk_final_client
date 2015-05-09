@@ -13,16 +13,31 @@
         <div>
             <h1>{{mode}} a review</h1>
 
-            <h1>{{course.name}}</h1>
         </div>
 
         <form name="reviewForm">
             <div class="row">
                 <div class="small-12 columns">
+                    <label>Course:
+                        <select ng-model="review.course"
+                                ng-options="course._id as course.name for course in courses"
+                                name="course"
+                                ng-disabled="disableCourse"
+                                required>
+                            <option value=""></option>
+                        </select>
+                    </label>
+                    <small ng-show="reviewForm.course.$error.required && (reviewForm.course.$dirty || error)" class="error">
+                        Course required
+                    </small>
+                </div>
+
+                <div class="small-12 columns">
                     <label>Professor:
                         <select ng-model="review.professor"
                                 ng-options="prof._id as prof.name for prof in professors"
                                 name="prof"
+                                ng-disabled="disableProf"
                                 required>
                             <option value=""></option>
                         </select>

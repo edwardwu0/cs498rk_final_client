@@ -52,6 +52,9 @@ function restFunctions($http, endPoint) {
         data: $.param(obj),
         headers: {'Content-Type': 'application/x-www-form-urlencoded'}
       });
+    },
+    deleteById: function(id) {
+      return $http.delete(baseUrl + '/api/'+ endPoint +'/' + id);
     }
   }
 }
