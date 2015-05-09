@@ -350,13 +350,23 @@ appControllers.controller('ProfController', ['$scope', '$q', '$http', '$routePar
     loadComments();
   };
 
+  $scope.range = function(n) {
+    return new Array(n);
+  };
+
   function loadComments() {
     console.log('comments');
     console.log($scope.reviews);
-
+    /*
     $scope.reviews.forEach(function(obj, i) {
-
-    })
+      var comments = obj.comments;
+      var commentList = [];
+      comments.forEach(function(commentId, j) {
+        commentList.push(getComment(commentId, function(value) {
+          $scope.reviews[i]
+        }))
+      });
+    });*/
 
     for (var i in $scope.reviews) {
       console.log(i);
@@ -399,8 +409,8 @@ appControllers.controller('ProfController', ['$scope', '$q', '$http', '$routePar
       });
   }
 
-  function getCourse(courseId, callback) {
-    return CourseService.getById(courseId).success(
+  function getComment(id, callback) {
+    return CommentService.getById(id).success(
       function (value) {
         return callback(value.data);
       }
@@ -591,6 +601,7 @@ appControllers.controller('UserReviewController', ['$scope', '$q', '$http', '$ro
         load();
       });
   };
+  //TODO: delete associated comments as well
 
   load();
 

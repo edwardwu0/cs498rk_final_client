@@ -28,9 +28,19 @@
         </div>
 
         <div class="row">
-            <p>Comments:</p>
-            <div ng-repeat="comment in comments[review._id]">
-                <strong>{{comment.user}}</strong>: {{comment.body}}
+            <div class="small-12 columns">
+                <p>Comments:</p>
+                <div ng-repeat="i in [1, 2]">
+                    <div><strong>Name:</strong></div>
+                    <div>Comment test</div>
+                </div>
+                <!--<div ng-repeat="comment in comments[review._id]">
+                    <strong>{{comment.user}}</strong>: {{comment.body}}
+                </div>-->
+
+                <form ng-submit="submitComment(review._id)">
+                    <input placeholder="Comments" type="text" name="comment" maxlength="75" ng-model="newComment"/>
+                </form>
             </div>
         </div>
     </div>
