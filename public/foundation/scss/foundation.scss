@@ -43,3 +43,25 @@
   @import "foundation/components/type";
   @import "foundation/components/offcanvas";
   @import "foundation/components/visibility";
+
+  @import url(http://fonts.googleapis.com/css?family=Montserrat);
+
+body {
+  background-color: #94A1B4;
+}
+
+.pageheaderwords {
+  color: #193050;
+  font-size: 30px;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.coolcatstopbar {
+  margin-bottom: 1%;
+}
+
+label {
+  color: #ffffff;
+  font-size: 15px;
+  font-family: 'Montserrat', sans-serif;
+}

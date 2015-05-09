@@ -11,7 +11,7 @@
 
     <div ng-show="validReview">
         <div>
-            <h1>{{mode}} a review</h1>
+            <h1 class="pageheaderwords">{{mode}} a Review</h1>
 
         </div>
 
@@ -32,20 +32,6 @@
                     </small>
                 </div>
 
-                <div class="small-12 columns">
-                    <label>Professor:
-                        <select ng-model="review.professor"
-                                ng-options="prof._id as prof.name for prof in professors"
-                                name="prof"
-                                ng-disabled="disableProf"
-                                required>
-                            <option value=""></option>
-                        </select>
-                    </label>
-                    <small ng-show="reviewForm.prof.$error.required && (reviewForm.prof.$dirty || error)" class="error">
-                        Professor required
-                    </small>
-                </div>
 
                 <div class="small-12 columns">
                     <div class="row collapse">
@@ -67,6 +53,22 @@
                             </small>
                         </div>
 
+                        <div class="small-9 columns">
+                            <label>Professor:
+                                <select ng-model="review.professor"
+                                        ng-options="prof._id as prof.name for prof in professors"
+                                        name="prof"
+                                        ng-disabled="disableProf"
+                                        required>
+                                    <option value=""></option>
+                                </select>
+                            </label>
+                            <small ng-show="reviewForm.prof.$error.required && (reviewForm.prof.$dirty || error)" class="error">
+                                Professor required
+                            </small>
+                        </div>
+
+
                     </div>
                 </div>
 
@@ -82,6 +84,7 @@
                 </div>
 
                 <div class="small-12 columns">
+                    <br>
                     <label>Review Text: [{{300 - review.body.length}}]
                     <textarea rows="10" type="text" name="desc"
                               maxlength="300" ng-model="review.body"
@@ -93,9 +96,11 @@
                 </div>
             </div>
         </form>
-
-        <a ng-click="submit()" class="button radius">Submit</a>
-        <a ng-href="#/course/{{course._id}}" class="button radius alert">Cancel</a>
+        <br>
+        <div class="small-12 columns">
+            <a ng-click="submit()" class="button small-6 columns radius">Submit</a>
+            <a ng-href="#/course/{{course._id}}" class="button small-6 columns radius alert">Cancel</a>
+        </div>
 
     </div>
 </div>
