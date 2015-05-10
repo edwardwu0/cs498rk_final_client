@@ -45,16 +45,17 @@
   @import "foundation/components/visibility";
 
   @import url(http://fonts.googleapis.com/css?family=Montserrat);
-
+  @import url(http://fonts.googleapis.com/css?family=Fredericka+the+Great);
 
 body {
   background-color: #94A1B4;
 }
 
 .pageheaderwords {
-  color: #193050;
-  font-size: 30px;
-  font-family: 'Montserrat', sans-serif;
+  padding-left: 2%;
+  color: #002966;
+  font-size: 35px;
+  font-family: 'Fredericka the Great', cursive;
 }
 
 .coolcatstopbar {
@@ -65,4 +66,16 @@ label {
   color: #ffffff;
   font-size: 15px;
   font-family: 'Montserrat', sans-serif;
+}
+
+.backgrounddetaildiv {
+  background-color: #E6F0FF;
+}
+
+.individualreviewwrapper {
+  background-color: #BAC2CF;
+  margin-top: 2%;
+  margin-bottom: 2%;
+  margin-left: 2%;
+  margin-right: 2%;
 }

@@ -1,5 +1,5 @@
-<div class="row">
-    <h1>{{course.name}}</h1>
+<div class="row backgrounddetaildiv">
+    <h1 class="pageheaderwords">{{course.name}}</h1>
     <a ng-href="#/review/course/{{course._id}}">Add a review</a>
 
     <p>Average Rating: {{ratingAverage}}</p>
@@ -10,17 +10,15 @@
         <p>{{rating.rating}}</p>
     </div>
 
-    <div ng-repeat="review in reviews">
+    <div ng-repeat="review in reviews" class="individualreviewwrapper">
         <div class="row">
-
-            <p>{{review}}</p>
 
             <div class="small-1 columns">
                 {{review.rating}}
 
                 <p>{{review.votes}}</p>
-                <a ng-click="upvote($index)">+</a>
-                <a ng-click="downvote($index)">-</a>
+                <a ng-click="upvote($index)"><i class="fa fa-angle-up fa-3x"></i></a>
+                <a ng-click="downvote($index)"><i class="fa fa-angle-down fa-3x"></i></a>
             </div>
             <div class="small-11 columns">
                 <h3>{{review.title}}</h3>
@@ -34,14 +32,13 @@
                 <p>Comments:</p>
                 <div ng-repeat="i in [1, 2]">
                     <div><strong>Name:</strong></div>
-                    <div>Comment test</div>
                 </div>
                 <div ng-repeat="comment in review.commentList">
                     <strong>{{comment.userName}}</strong>: {{comment.body}}
                 </div>
 
                 <form ng-submit="submitComment($index)">
-                    <input placeholder="Comments" type="text" name="comment" maxlength="75" ng-model="review.userInput"/>
+                    <input placeholder="Add a comment..." type="text" name="comment" maxlength="75" ng-model="review.userInput"/>
                 </form>
             </div>
         </div>
