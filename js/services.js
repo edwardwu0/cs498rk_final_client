@@ -19,7 +19,12 @@ angular.module('appServices', [])
   .factory('AuthService', function ($http) {
     return {
       getUser: function() {
-        return '554d8c2b2edcce772e01e895'; //TODO: add authentication
+        return {
+          _id: '',
+          facebookId: 'deleteMe',
+          name: '',
+          picture: 'http://i.imgur.com/QUEcEUq.jpg'
+        };
       }
     }
   })

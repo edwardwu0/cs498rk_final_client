@@ -23,6 +23,146 @@ appControllers.controller('SearchController', ['$scope', '$http', 'CourseService
 
 appControllers.controller('CourseController', ['$scope', '$q', '$http', '$routeParams', 'CourseService', 'ProfessorService', 'ReviewService', 'CommentService', function ($scope, $q, $http, $routeParams, CourseService, ProfessorService, ReviewService, CommentService) {
   var id = $routeParams.id;
+
+  CourseService.getById(id)
+    .then(function (res) {
+      $scope.course = res.data.data;
+
+      topNProfessors(3, $scope.course.professors);
+      var reviewParams = {where: {course: id}};
+      return ReviewService.get(reviewParams);
+    }, function () {
+      //TODO: do error handling
+      console.log('ERROR');
+      $q.reject();
+    })
+    .then(function (res) {
+      $scope.reviews = res.data.data;
+      $scope.ratingAverage = reviewAverage($scope.reviews);
+      getVotes();
+    })
+    ;
+
+  function reviewAverage(reviews) {
+    if (reviews.length == 0)
+      return 0;
+    var average = 0;
+
+    reviews.forEach(function (review) {
+      average += review.rating;
+    });
+
+    console.log(reviews);
+
+    return average / reviews.length;
+  }
+
+  function topNProfessors(n, professors) {
+    //dictionary of professor ids and their average rating
+    var profAvgRatings = {};
+
+    var reviewList = [];
+
+    //Get the average rating for each professor for this course
+    professors.forEach(function(profId) {
+      reviewList.push(getReviews({where: {professor: profId, course: id}}, function(reviews) {
+        if (reviews.length == 0)
+          profAvgRatings[profId] = 0;
+        else {
+          profAvgRatings[profId] = reviewAverage(reviews);
+        }
+      }));
+    });
+
+    $q.all(reviewList)
+      .then(function() {
+
+        //get n best professors
+        var bestProfsList = getSortedKeys(profAvgRatings).splice(0, n);
+
+
+        //get names for n best professors
+        var bestProfs = [];
+        var nameList = [];
+
+        bestProfsList.forEach(function(profId) {
+          nameList.push(getProfessor(profId, function(professor) {
+            bestProfs.push({name: professor.name, rating: profAvgRatings[profId]});
+          }));
+        });
+
+        $q.all(nameList)
+          .then(function () {
+            $scope.topProfs = bestProfs;
+          });
+      });
+
+  }
+
+  function getVotes () {
+    for (var i = 0; i < $scope.reviews.length; i++) {
+      $scope.reviews[i].votes = $scope.reviews[i].upvotes.length - $scope.reviews[i].downvotes.length
+    }
+  }
+
+  $scope.upvote = function (index) {
+    var i = $scope.reviews[index].upvotes.indexOf(currentUser);
+    if (i == -1) {
+      $scope.reviews[index].upvotes.push(currentUser);
+    } else {
+      $scope.reviews[index].upvotes.splice(i, 1);
+    }
+
+    var j = $scope.reviews[index].downvotes.indexOf(currentUser);
+    if (j > -1) {
+      $scope.reviews[index].downvotes.splice(j, 1);
+    }
+
+    getVotes();
+
+  };
+
+  $scope.downvote = function (index) {
+    var i = $scope.reviews[index].downvotes.indexOf(currentUser);
+    if (i == -1) {
+      $scope.reviews[index].downvotes.push(currentUser);
+    } else {
+      $scope.reviews[index].downvotes.splice(i, 1);
+    }
+
+    var j = $scope.reviews[index].upvotes.indexOf(currentUser);
+    if (j > -1) {
+      $scope.reviews[index].upvotes.splice(j, 1);
+    }
+
+    getVotes();
+  };
+
+  function getSortedKeys(obj) {
+    var keys = []; for(var key in obj) keys.push(key);
+    return keys.sort(function(a,b){return obj[a]-obj[b]});
+  }
+
+  function getProfessor(id, callback) {
+    return ProfessorService.getById(id)
+      .success(function(value) {
+        callback(value.data);
+      });
+  }
+
+  function getReviews(param, callback) {
+    return ReviewService.get(param)
+      .success(function(value) {
+        callback(value.data);
+      });
+  }
+
+}]);
+
+
+/*
+appControllers.controller('CourseController', ['$scope', '$q', '$http', '$routeParams', 'CourseService', 'ProfessorService', 'ReviewService', 'CommentService', function ($scope, $q, $http, $routeParams, CourseService, ProfessorService, ReviewService, CommentService) {
+  var id = $routeParams.id;
   var currentUser = '554d8c2b2edcce772e01e895'; //TODO: for authentication
 
   $scope.topProfs = [];
@@ -140,88 +280,7 @@ appControllers.controller('CourseController', ['$scope', '$q', '$http', '$routeP
   }
 
 }]);
-
-appControllers.controller('CourseReviewController', ['$scope', '$location', '$http', '$routeParams', 'CourseService', 'ProfessorService', 'ReviewService', function ($scope, $location, $http, $routeParams, CourseService, ProfessorService, ReviewService) {
-  var courseId = $routeParams.id;
-  var reviewId = $routeParams.reviewId;
-
-  $scope.mode = 'Add';
-  $scope.displayText = '';
-  $scope.showMessage = false;
-  $scope.error = false;
-  $scope.validReview = true;
-
-  $scope.review = {
-    user: '554d8c2b2edcce772e01e895', //change once we have authentication
-    course: courseId,
-    rating: '',
-    professor: '',
-    title: '',
-    body: ''
-  };
-
-  if (typeof reviewId != 'undefined') { //editing an existing review
-    $scope.mode = 'Edit';
-
-    ReviewService.getById(reviewId)
-      .success(function (data, status) {
-        $scope.review = data.data;
-      })
-      .error(function (data, status) {
-        $scope.displayText = "The review you're attempting to edit doesn't exist";
-        $scope.error = true;
-        $scope.showMessage = true;
-        $scope.validReview = false;
-      });
-
-  }
-
-  CourseService.getById(courseId)
-    .then(function (res) {
-      $scope.course = res.data.data;
-      $scope.message = res.data.message;
-      $scope.status = res.data.status;
-      var profParams = {where: {_id: {"$in": $scope.course.professors}}, select: {'name': 1}};
-      return ProfessorService.get(profParams);
-    }).then(function (res) {
-      $scope.professors = res.data.data;
-    });
-
-
-  $scope.submit = function () {
-    if ($scope.reviewForm.prof.$invalid || $scope.reviewForm.rating.$invalid
-      || $scope.reviewForm.title.$invalid || $scope.reviewForm.desc.$invalid) {
-      $scope.error = true;
-    } else {
-      var review = $scope.review;
-      console.log('here');
-      $scope.error = false;
-
-      console.log(review);
-
-      var query;
-
-      if ($scope.mode == 'Add') {
-        query = ReviewService.post(review);
-      } else {
-        query = ReviewService.updateByObj(review);
-      }
-      query
-        .success(function (data, status) {
-          $scope.showMessage = true;
-          $scope.displayText = data.message;
-          $scope.error = false;
-        })
-        .error(function (data, status) {
-          $scope.showMessage = true;
-          $scope.displayText = data.message;
-          $scope.error = true;
-        });
-    }
-  }
-
-}]);
-
+*/
 
 appControllers.controller('ProfController', ['$scope', '$q', '$http', '$routeParams', 'CourseService', 'ProfessorService', 'ReviewService', 'CommentService', 'UserService', function ($scope, $q, $http, $routeParams, CourseService, ProfessorService, ReviewService, CommentService, UserService) {
   var id = $routeParams.id;

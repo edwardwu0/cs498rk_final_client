@@ -4,7 +4,7 @@
 
     <p>Average Rating: {{ratingAverage}}</p>
 
-    <div ng-repeat="rating in topProfs | limitTo: 3 | orderBy: 'rating.rating'">
+    <div ng-repeat="rating in topProfs | orderBy: 'rating.rating'">
         <h4>{{rating.name}}</h4>
 
         <p>{{rating.rating}}</p>
