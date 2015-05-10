@@ -53,7 +53,7 @@
                             </small>
                         </div>
 
-                        <div class="small-9 columns">
+                        <div class="small-8 columns">
                             <label>Professor:
                                 <select ng-model="review.professor"
                                         ng-options="prof._id as prof.name for prof in professors"
@@ -97,9 +97,11 @@
             </div>
         </form>
         <br>
-        <div class="small-12 small-uncollapse columns">
-            <a ng-click="submit()" class="button small-6 columns radius">Submit</a>
-            <a ng-href="#/course/{{course._id}}" class="button small-6 columns radius alert">Cancel</a>
+        <div class="small-12 container">
+        <div class="small-12 columns">
+            <a ng-click="submit()" class="button small-5 columns radius submitbutton">Submit</a>
+            <a ng-href="#/course/{{course._id}}" class="button small-5 columns radius alert cancelbutton">Cancel</a>
+        </div>
         </div>
 
     </div>
