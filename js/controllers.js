@@ -263,7 +263,7 @@ appControllers.controller('CourseController', ['$scope', '$q', '$http', '$routeP
 }]);
 
 
-appControllers.controller('ProfController', ['$scope', '$q', '$http', '$routeParams', 'CourseService', 'ProfessorService', 'ReviewService', 'CommentService', 'UserService', function ($scope, $q, $http, $routeParams, CourseService, ProfessorService, ReviewService, CommentService, UserService) {
+appControllers.controller('ProfController', ['$scope', '$q', '$http', '$routeParams', 'CourseService', 'ProfessorService', 'ReviewService', 'CommentService', 'UserService', 'AuthService', function ($scope, $q, $http, $routeParams, CourseService, ProfessorService, ReviewService, CommentService, UserService, AuthService) {
   var id = $routeParams.id;
 
   AuthService.getUser()
@@ -272,12 +272,12 @@ appControllers.controller('ProfController', ['$scope', '$q', '$http', '$routePar
     });
 
 
-  CourseService.getById(id)
+  ProfessorService.getById(id)
     .then(function (res) {
-      $scope.course = res.data.data;
+      $scope.professor = res.data.data;
 
-      topNProfessors(3, $scope.course.professors);
-      var reviewParams = {where: {course: id}};
+      topNCourses(3, $scope.professor.courses);
+      var reviewParams = {where: {professor: id}};
       return ReviewService.get(reviewParams);
     }, function () {
       //TODO: do error handling
@@ -304,19 +304,21 @@ appControllers.controller('ProfController', ['$scope', '$q', '$http', '$routePar
     return average / reviews.length;
   }
 
-  function topNProfessors(n, professors) {
+  function topNCourses(n, courses) {
     //dictionary of professor ids and their average rating
-    var profAvgRatings = {};
+    var courseAvgRatings = {};
 
     var reviewList = [];
 
+    console.log(courses);
+
     //Get the average rating for each professor for this course
-    professors.forEach(function (profId) {
-      reviewList.push(getReviews({where: {professor: profId, course: id}}, function (reviews) {
+    courses.forEach(function (courseId) {
+      reviewList.push(getReviews({where: {professor: id, course: courseId}}, function (reviews) {
         if (reviews.length == 0)
-          profAvgRatings[profId] = 0;
+          courseAvgRatings[courseId] = 0;
         else {
-          profAvgRatings[profId] = reviewAverage(reviews);
+          courseAvgRatings[courseId] = reviewAverage(reviews);
         }
       }));
     });
@@ -324,23 +326,25 @@ appControllers.controller('ProfController', ['$scope', '$q', '$http', '$routePar
     $q.all(reviewList)
       .then(function () {
 
-        //get n best professors
-        var bestProfsList = getSortedKeys(profAvgRatings).splice(0, n);
+        console.log(courseAvgRatings);
 
+        //get n best professors
+        var bestCoursesList = getSortedKeys(courseAvgRatings).splice(0, n);
 
         //get names for n best professors
-        var bestProfs = [];
+        var bestCourses = [];
         var nameList = [];
 
-        bestProfsList.forEach(function (profId) {
-          nameList.push(getProfessor(profId, function (professor) {
-            bestProfs.push({name: professor.name, rating: profAvgRatings[profId]});
+        bestCoursesList.forEach(function (profId) {
+          nameList.push(getCourse(profId, function (professor) {
+            bestCourses.push({name: professor.name, rating: courseAvgRatings[profId]});
           }));
         });
 
         $q.all(nameList)
           .then(function () {
-            $scope.topProfs = bestProfs;
+            console.log(bestCourses);
+            $scope.topCourses = bestCourses;
           });
       });
 
@@ -488,8 +492,8 @@ appControllers.controller('ProfController', ['$scope', '$q', '$http', '$routePar
     });
   }
 
-  function getProfessor(id, callback) {
-    return ProfessorService.getById(id)
+  function getCourse(id, callback) {
+    return CourseService.getById(id)
       .success(function (value) {
         callback(value.data);
       });
@@ -508,6 +512,13 @@ appControllers.controller('ReviewController', ['$scope', '$location', '$http', '
   var profId = $routeParams.profId;
   var courseId = $routeParams.courseId;
   var reviewId = $routeParams.reviewId;
+
+  if (typeof reviewId != 'undefined')
+    $scope.returnAddress = '#/search';
+  if (typeof profId != 'undefined')
+    $scope.returnAddress = '#/professor/' + profId;
+  if (typeof courseId != 'undefined')
+    $scope.returnAddress = '#/course/' + courseId;
 
   $scope.disableCourse = false;
   $scope.disableProf = false;
@@ -552,6 +563,7 @@ appControllers.controller('ReviewController', ['$scope', '$location', '$http', '
   }
 
   if (typeof profId != 'undefined') {
+    console.log(profId);
     loadCourses();
   }
 

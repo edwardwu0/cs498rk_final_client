@@ -1,21 +1,21 @@
 <div class="row">
-    <h1>{{prof.name}}</h1>
+    <h1>{{professor.name}}</h1>
 
-    <a ng-href="#/review/professor/{{prof._id}}">Add a review</a>
+    <a ng-href="#/review/professor/{{professor._id}}">Add a review</a>
 
-    <p>Average Rating: {{ratingAverage}}</p>
+    <p>Average Rating: {{ratingAverage | number:2}}</p>
 
-    <div ng-repeat="rating in topCourses | limitTo: 3 | orderBy: 'rating.rating'">
+    <div ng-repeat="rating in topCourses | orderBy: 'rating.rating'">
         <h4>{{rating.name}}</h4>
 
-        <p>{{rating.rating}}</p>
+        <p>{{rating.rating | number:2}}</p>
     </div>
 
     <div ng-repeat="review in reviews">
         <div class="row">
             <!--{{review}}-->
             <div class="small-1 columns">
-                {{review.rating}}
+                {{review.rating | number:2}}
 
                 <p>{{review.votes}}</p>
                 <a ng-click="upvote($index)">+</a>
@@ -29,27 +29,14 @@
         </div>
 
         <div class="row">
-            <p>Comments:</p>
-
-            <div ng-repeat="comment in review.comment_objs">
-                {{comment}}
-                <strong>{{comment.name}}</strong>: {{comment.body}}
-            </div>
-        </div>
-
-        <div class="row">
             <div class="small-12 columns">
                 <p>Comments:</p>
-                <div ng-repeat="i in [1, 2]">
-                    <div><strong>Name:</strong></div>
-                    <div>Comment test</div>
+                <div ng-repeat="comment in review.commentList">
+                    <strong>{{comment.userName}}</strong>: {{comment.body}}
                 </div>
-                <!--<div ng-repeat="comment in comments[review._id]">
-                    <strong>{{comment.user}}</strong>: {{comment.body}}
-                </div>-->
 
-                <form ng-submit="submitComment(review._id)">
-                    <input placeholder="Comments" type="text" name="comment" maxlength="75" ng-model="newComment"/>
+                <form ng-submit="submitComment($index)">
+                    <input placeholder="Comments" type="text" name="comment" maxlength="75" ng-model="review.userInput"/>
                 </form>
             </div>
         </div>

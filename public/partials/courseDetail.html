@@ -2,12 +2,12 @@
     <h1>{{course.name}}</h1>
     <a ng-href="#/review/course/{{course._id}}">Add a review</a>
 
-    <p>Average Rating: {{ratingAverage}}</p>
+    <p>Average Rating: {{ratingAverage | number:2}}</p>
 
     <div ng-repeat="rating in topProfs | orderBy: 'rating.rating'">
         <h4>{{rating.name}}</h4>
 
-        <p>{{rating.rating}}</p>
+        <p>{{rating.rating | number:2}}</p>
     </div>
 
     <div ng-repeat="review in reviews">
@@ -16,7 +16,7 @@
             <p>{{review}}</p>
 
             <div class="small-1 columns">
-                {{review.rating}}
+                {{review.rating | number:2}}
 
                 <p>{{review.votes}}</p>
                 <a ng-click="upvote($index)">+</a>
@@ -32,10 +32,7 @@
         <div class="row">
             <div class="small-12 columns">
                 <p>Comments:</p>
-                <div ng-repeat="i in [1, 2]">
-                    <div><strong>Name:</strong></div>
-                    <div>Comment test</div>
-                </div>
+
                 <div ng-repeat="comment in review.commentList">
                     <strong>{{comment.userName}}</strong>: {{comment.body}}
                 </div>
