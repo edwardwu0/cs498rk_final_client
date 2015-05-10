@@ -185,7 +185,7 @@ appControllers.controller('CourseController', ['$scope', '$q', '$http', '$routeP
   }
 
   $scope.submitComment = function (index) {
-    if (typeof $scope.currentUser != 'undefined') {
+    if (typeof $scope.currentUser != 'undefined' && $scope.reviews[index].userInput.length > 0) {
       console.log(index + ': ' + $scope.reviews[index].userInput);
       createComment(index, $scope.reviews[index].userInput);
       retrieveComments();
@@ -431,7 +431,7 @@ appControllers.controller('ProfController', ['$scope', '$q', '$http', '$routePar
   }
 
   $scope.submitComment = function (index) {
-    if (typeof $scope.currentUser != 'undefined') {
+    if (typeof $scope.currentUser != 'undefined' && $scope.reviews[index].userInput.length > 0) {
       console.log(index + ': ' + $scope.reviews[index].userInput);
       createComment(index, $scope.reviews[index].userInput);
       retrieveComments();
