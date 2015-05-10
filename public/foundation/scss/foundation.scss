@@ -49,13 +49,19 @@
 
 body {
   background-color: #94A1B4;
+  font-family: 'Montserrat', sans-serif;
 }
 
 .pageheaderwords {
-  padding-left: 2%;
   color: #002966;
   font-size: 35px;
   font-family: 'Fredericka the Great', cursive;
+  padding-left: 3%;
+}
+
+.pagesubheaderwords{
+  padding-left: 3%;
+  color: #3B3E42;
 }
 
 .coolcatstopbar {
@@ -78,4 +84,23 @@ label {
   margin-bottom: 2%;
   margin-left: 2%;
   margin-right: 2%;
+}
+
+.throwsometoppads {
+  padding-top: 2%;
+  padding-bottom: 2%;
+}
+
+.bolddatshit {
+  font-weight: bold;
+}
+
+table {
+  width: 96%;
+  margin-left: 2%;
+  margin-right: 2%;
+}
+
+.sexiibutton {
+  margin-top: 2%;
 }

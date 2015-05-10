@@ -1,14 +1,28 @@
 <div class="row backgrounddetaildiv">
-    <h1 class="pageheaderwords">{{course.name}}</h1>
-    <a ng-href="#/review/course/{{course._id}}">Add a review</a>
-
-    <p>Average Rating: {{ratingAverage | number:2}}</p>
-
-    <div ng-repeat="rating in topProfs | orderBy: 'rating.rating'">
-        <h4>{{rating.name}}</h4>
-
-        <p>{{rating.rating | number:2}}</p>
+    <div class="row small-12 throwsometoppads">
+        <div class="column small-9">
+            <div class="row small-6">
+                <h1 class="pageheaderwords">{{course.name}}</h1>
+            </div>
+            <div class="row small-6">
+                <p class="pagesubheaderwords">Average Rating: {{ratingAverage | number:2}}</p>
+            </div>
+        </div>
+        <div class="column small-3">
+        <a ng-href="#/review/course/{{course._id}}" class="button radius column small-11 sexiibutton success">Add a Review</a>
+        </div>
     </div>
+
+    <table>
+        <tr>
+            <td class="bolddatshit">Top Professor:</td>
+            <td class="bolddatshit">Average Rating:</td>
+        </tr>
+        <tr ng-repeat="rating in topProfs | orderBy: 'rating.rating'">
+            <td>{{rating.name}}</td>
+            <td>{{rating.rating | number:2}}</td>
+        </tr>
+    </table>
 
     <div ng-repeat="review in reviews" class="individualreviewwrapper">
         <div class="row">
@@ -30,9 +44,6 @@
         <div class="row">
             <div class="small-12 columns">
                 <p>Comments:</p>
-                <div ng-repeat="i in [1, 2]">
-                    <div><strong>Name:</strong></div>
-                </div>
                 <div ng-repeat="comment in review.commentList">
                     <strong>{{comment.userName}}</strong>: {{comment.body}}
                 </div>
