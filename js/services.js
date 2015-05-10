@@ -16,15 +16,21 @@ angular.module('appServices', [])
   .factory('CommentService', function ($http) {
     return restFunctions($http, 'comments');
   })
-  .factory('AuthService', function ($http) {
+  .factory('AuthService', function ($http, $q) {
     return {
       getUser: function() {
-        return {
-          _id: '',
+        var deferred = $q.defer();
+
+        var fakeUser = {
+          _id: '554d8c2b2edcce772e01e895',
           facebookId: 'deleteMe',
-          name: '',
+          name: 'John Doe',
           picture: 'http://i.imgur.com/QUEcEUq.jpg'
         };
+
+        deferred.resolve(fakeUser);
+
+        return deferred.promise
       }
     }
   })
