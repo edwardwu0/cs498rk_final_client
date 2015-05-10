@@ -15,8 +15,8 @@
 
     <table>
         <tr>
-            <td class="bolddatshit">Top Professor:</td>
-            <td class="bolddatshit">Average Rating:</td>
+            <th class="bolddatshit">Top Professor:</th>
+            <th class="bolddatshit">Average Rating:</th>
         </tr>
         <tr ng-repeat="rating in topProfs | orderBy: 'rating.rating'">
             <td>{{rating.name}}</td>
@@ -27,9 +27,10 @@
     <div ng-repeat="review in reviews" class="individualreviewwrapper">
         <div class="row">
 
-            <div class="small-1 columns">
+            <div class="small-2 small-right columns">
                 {{review.rating | number:2}}
-
+            </div>
+            <div class="columns">
                 <p>{{review.votes}}</p>
                 <a ng-click="upvote($index)"><i class="fa fa-angle-up fa-3x"></i></a>
                 <a ng-click="downvote($index)"><i class="fa fa-angle-down fa-3x"></i></a>
